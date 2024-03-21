@@ -9,7 +9,7 @@ namespace Hooks
 		{
 			auto result = func(a_this, a_activator, a_dst);
 
-			if (Language::gameLanguage == "ENGLISH"_h) {
+			if (Language::gameLanguageHash == "ENGLISH"_h) {
 				return result;
 			} 
 
