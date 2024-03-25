@@ -30,6 +30,18 @@ namespace Language
 		info<RE::TESBoundObject> object;
 	};
 
+	class chinese : public language
+	{
+	public:
+		using language::language;
+		~chinese() override = default;
+
+		std::string output() override
+		{
+			return owner.text.append("的").append(object.text);
+		}
+	};
+
 	class french : public language
 	{
 	public:
