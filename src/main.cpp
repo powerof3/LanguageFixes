@@ -8,12 +8,7 @@ void MessageHandler(SKSE::MessagingInterface::Message* a_message)
 		Hooks::Install();
 		break;
 	case SKSE::MessagingInterface::kDataLoaded:
-		{
-			auto language = string::toupper(RE::GetINISetting("sLanguage:General")->GetString());
-			Language::gameLanguageHash = string::const_hash(language);
-
-			logger::info("Game language is {}", language);
-		}
+		Language::GetGameLanguageHash();
 		break;
 	default:
 		break;

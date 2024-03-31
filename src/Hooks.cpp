@@ -22,7 +22,7 @@ namespace Hooks
 				std::string line;
 				while (std::getline(iss, line)) {
 					if (srell::regex_search(line, match, pattern)) {
-						oss << Language::get_output(a_activator, a_this, match);
+						oss << Language::GetOutput(a_activator, a_this, match);
 					} else {
 						oss << line;
 					}

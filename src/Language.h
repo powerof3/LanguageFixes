@@ -105,6 +105,18 @@ namespace Language
 		}
 	};
 
+	class japanese : public language
+	{
+	public:
+		using language::language;
+		~japanese() override = default;
+
+		std::string output() override
+		{
+			return owner.text.append("の").append(object.text);
+		}
+	};
+
 	class polish : public language
 	{
 	public:
@@ -178,5 +190,7 @@ namespace Language
 	};
 
 	inline std::uint64_t gameLanguageHash;
-	std::string          get_output(RE::TESObjectREFR* a_owner, RE::TESBoundObject* a_object, const srell::smatch& a_match);
+
+	void        GetGameLanguageHash();
+	std::string GetOutput(RE::TESObjectREFR* a_owner, RE::TESBoundObject* a_object, const srell::smatch& a_match);
 }
