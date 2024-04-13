@@ -47,8 +47,11 @@ namespace Language
 			logger::info("Language override set to AUTODETECT ({})", gameLanguage);		
 			gameLanguageHash = string::const_hash(gameLanguage);
 		} else {
+			string::trim(language);
+			language = string::toupper(language);
+			
 			logger::info("Language override set to {}", language);			
-			gameLanguageHash = string::const_hash(string::toupper(language));
+			gameLanguageHash = string::const_hash(language);
 		}
 	}
 }
