@@ -13,6 +13,8 @@ namespace Language
 			return german(a_owner, a_object, a_match).output();
 		case "JAPANESE"_h:
 			return japanese(a_owner, a_object, a_match).output();
+		case "KOREAN"_h:
+			return korean(a_owner, a_object, a_match).output();
 		case "POLISH"_h:
 			return polish(a_owner, a_object, a_match).output();
 		case "PORTUGUESE"_h:

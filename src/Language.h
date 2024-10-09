@@ -117,6 +117,18 @@ namespace Language
 		}
 	};
 
+	class korean : public language
+	{
+	public:
+		using language::language;
+		~korean() override = default;
+
+		std::string output() override
+		{
+			return owner.text.append("의 ").append(object.text);
+		}
+	};
+
 	class polish : public language
 	{
 	public:
