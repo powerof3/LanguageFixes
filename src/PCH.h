@@ -50,5 +50,3 @@ namespace stl
 #else
 #	define OFFSET(se, ae) se
 #endif
-
-using Key = std::uint32_t;

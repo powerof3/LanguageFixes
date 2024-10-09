@@ -165,6 +165,18 @@ namespace Language
 		}
 	};
 
+	class portuguese : public language
+	{
+	public:
+		using language::language;
+		~portuguese() override = default;
+
+		std::string output() override
+		{
+			return object.text.append(" de ").append(owner.text);
+		}
+	};
+
 	class spanish : public language
 	{
 	public:

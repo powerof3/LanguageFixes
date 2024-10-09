@@ -15,6 +15,8 @@ namespace Language
 			return japanese(a_owner, a_object, a_match).output();
 		case "POLISH"_h:
 			return polish(a_owner, a_object, a_match).output();
+		case "PORTUGUESE"_h:
+			return portuguese(a_owner, a_object, a_match).output();
 		case "SPANISH"_h:
 			return spanish(a_owner, a_object, a_match).output();
 		default:
@@ -44,13 +46,13 @@ namespace Language
 		std::string gameLanguage = string::toupper(RE::GetINISetting("sLanguage:General")->GetString());
 
 		if (language.empty()) {
-			logger::info("Language override set to AUTODETECT ({})", gameLanguage);		
+			logger::info("Language override set to AUTODETECT ({})", gameLanguage);
 			gameLanguageHash = string::const_hash(gameLanguage);
 		} else {
 			string::trim(language);
 			language = string::toupper(language);
-			
-			logger::info("Language override set to {}", language);			
+
+			logger::info("Language override set to {}", language);
 			gameLanguageHash = string::const_hash(language);
 		}
 	}
