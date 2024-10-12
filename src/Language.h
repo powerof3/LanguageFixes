@@ -213,8 +213,11 @@ namespace Language
 		}
 	};
 
+	inline std::string   languageOverride{};
 	inline std::uint64_t gameLanguageHash;
+	inline bool          doNPCReplacement{ true };
 
+	void        LoadSettings();
 	void        GetGameLanguageHash();
 	std::string GetOutput(RE::TESObjectREFR* a_owner, RE::TESBoundObject* a_object, const srell::smatch& a_match);
 }

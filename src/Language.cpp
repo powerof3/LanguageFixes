@@ -26,36 +26,34 @@ namespace Language
 		}
 	}
 
+	void LoadSettings()
+	{
+		constexpr auto path = L"Data/SKSE/Plugins/po3_LanguageFixes.ini";
+
+		CSimpleIniA ini;
+		ini.SetUnicode();
+
+		ini.LoadFile(path);
+
+		ini::get_value(ini, languageOverride, "Settings", "sLanguageOverride", nullptr);
+		ini::get_value(ini, doNPCReplacement, "Settings", "bNPCNameReplacement", nullptr);
+
+		(void)ini.SaveFile(path);
+	}
+
 	void GetGameLanguageHash()
 	{
-		std::string language{};
-
-		const auto load_ini = [&]() {
-			constexpr auto path = L"Data/SKSE/Plugins/po3_LanguageFixes.ini";
-
-			CSimpleIniA ini;
-			ini.SetUnicode();
-
-			ini.LoadFile(path);
-
-			ini::get_value(ini, language, "Settings", "sLanguageOverride", nullptr);
-
-			(void)ini.SaveFile(path);
-		};
-
-		load_ini();
-
 		std::string gameLanguage = string::toupper(RE::GetINISetting("sLanguage:General")->GetString());
 
-		if (language.empty()) {
+		if (languageOverride.empty()) {
 			logger::info("Language override set to AUTODETECT ({})", gameLanguage);
 			gameLanguageHash = string::const_hash(gameLanguage);
 		} else {
-			string::trim(language);
-			language = string::toupper(language);
+			string::trim(languageOverride);
+			languageOverride = string::toupper(languageOverride);
 
-			logger::info("Language override set to {}", language);
-			gameLanguageHash = string::const_hash(language);
+			logger::info("Language override set to {}", languageOverride);
+			gameLanguageHash = string::const_hash(languageOverride);
 		}
 	}
 }

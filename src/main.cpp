@@ -5,7 +5,10 @@ void MessageHandler(SKSE::MessagingInterface::Message* a_message)
 {
 	switch (a_message->type) {
 	case SKSE::MessagingInterface::kPostLoad:
-		Hooks::Install();
+		{
+			Language::LoadSettings();
+			Hooks::Install();
+		}
 		break;
 	case SKSE::MessagingInterface::kDataLoaded:
 		Language::GetGameLanguageHash();
