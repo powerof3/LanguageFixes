@@ -19,7 +19,7 @@ namespace Hooks
 			oss << '\n';
 		}
 
-		a_dst = oss.str();
+		a_dst = string::trim_copy(oss.str());
 	}
 
 	namespace TESObjectCONT
@@ -34,7 +34,7 @@ namespace Hooks
 					return result;
 				}
 
-				if (std::string text = a_dst.c_str(); text.contains("'s ")) {
+				if (std::string text = a_dst.c_str(); text.contains("'s ")) {				
 					static srell::regex pattern(R"(([\S\s]+?)'s\s([\S\s]+))");
 					do_replacement(text, pattern, a_this, a_activator, a_dst);
 				}
@@ -59,12 +59,13 @@ namespace Hooks
 					return result;
 				}
 
-				if (std::string text = a_dst.c_str(); text.contains("'s ") || text.contains(" - ")) {
+				if (std::string text = a_dst.c_str(); text.contains("'s ") || text.contains(" - ")) {				
 					srell::regex pattern(
 						text.contains("'s ") ?
 							R"(([\S\s]+?)'s\s([\S\s]+))" :
 							R"(([\S\s]+?)\s-\s([\S\s]+))");
 					do_replacement(text, pattern, a_this, a_activator, a_dst);
+					logger::info("{}", a_dst.c_str());
 				}
 
 				return result;
