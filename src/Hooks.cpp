@@ -65,7 +65,6 @@ namespace Hooks
 							R"(([\S\s]+?)'s\s([\S\s]+))" :
 							R"(([\S\s]+?)\s-\s([\S\s]+))");
 					do_replacement(text, pattern, a_this, a_activator, a_dst);
-					logger::info("{}", a_dst.c_str());
 				}
 
 				return result;
