@@ -2,27 +2,27 @@
 
 namespace Language
 {
-	std::string GetOutput(RE::TESObjectREFR* a_owner, RE::TESBoundObject* a_object, const boost::smatch& a_match)
+	std::string GetOutput(RE::TESObjectREFR* a_owner, RE::TESBoundObject* a_object, const boost::smatch& a_match, bool a_ownerFirst)
 	{
 		switch (gameLanguageHash) {
 		case "CHINESE"_h:
-			return chinese(a_owner, a_object, a_match).output();
+			return chinese(a_owner, a_object, a_match, a_ownerFirst).output();
 		case "FRENCH"_h:
-			return french(a_owner, a_object, a_match).output();
+			return french(a_owner, a_object, a_match, a_ownerFirst).output();
 		case "GERMAN"_h:
-			return german(a_owner, a_object, a_match).output();
+			return german(a_owner, a_object, a_match, a_ownerFirst).output();
 		case "JAPANESE"_h:
-			return japanese(a_owner, a_object, a_match).output();
+			return japanese(a_owner, a_object, a_match, a_ownerFirst).output();
 		case "KOREAN"_h:
-			return korean(a_owner, a_object, a_match).output();
+			return korean(a_owner, a_object, a_match, a_ownerFirst).output();
 		case "POLISH"_h:
-			return polish(a_owner, a_object, a_match).output();
+			return polish(a_owner, a_object, a_match, a_ownerFirst).output();
 		case "PORTUGUESE"_h:
-			return portuguese(a_owner, a_object, a_match).output();
+			return portuguese(a_owner, a_object, a_match, a_ownerFirst).output();
 		case "SPANISH"_h:
-			return spanish(a_owner, a_object, a_match).output();
+			return spanish(a_owner, a_object, a_match, a_ownerFirst).output();
 		default:
-			return generic(a_owner, a_object, a_match).output();
+			return generic(a_owner, a_object, a_match, a_ownerFirst).output();
 		}
 	}
 

@@ -3,7 +3,7 @@
 
 namespace Hooks
 {
-	static void do_replacement(std::string& text, const boost::regex& pattern, RE::TESBoundObject* a_this, RE::TESObjectREFR* a_activator, RE::BSString& a_dst)
+	static void do_replacement(std::string& text, const boost::regex& pattern, RE::TESBoundObject* a_this, RE::TESObjectREFR* a_activator, RE::BSString& a_dst, bool a_ownerFirst)
 	{
 		boost::smatch match;
 
@@ -12,7 +12,7 @@ namespace Hooks
 		std::string        line;
 		while (std::getline(iss, line)) {
 			if (boost::regex_search(line, match, pattern)) {
-				oss << Language::GetOutput(a_activator, a_this, match);
+				oss << Language::GetOutput(a_activator, a_this, match, a_ownerFirst);
 			} else {
 				oss << line;
 			}
@@ -34,9 +34,9 @@ namespace Hooks
 					return result;
 				}
 
-				if (std::string text = a_dst.c_str(); text.contains("'s ")) {				
+				if (std::string text = a_dst.c_str(); text.contains("'s ")) {
 					static boost::regex pattern(R"(([\S\s]+?)'s\s([\S\s]+))");
-					do_replacement(text, pattern, a_this, a_activator, a_dst);
+					do_replacement(text, pattern, a_this, a_activator, a_dst, true);
 				}
 
 				return result;
@@ -59,12 +59,14 @@ namespace Hooks
 					return result;
 				}
 
-				if (std::string text = a_dst.c_str(); text.contains("'s ") || text.contains(" - ")) {				
-					boost::regex pattern(
-						text.contains("'s ") ?
-							R"(([\S\s]+?)'s\s([\S\s]+))" :
-							R"(([\S\s]+?)\s-\s([\S\s]+))");
-					do_replacement(text, pattern, a_this, a_activator, a_dst);
+				if (std::string text = a_dst.c_str(); text.contains("'s ") || text.contains(" - ")) {
+					// Owner's NPC
+					static boost::regex ownerNPCPattern(R"(([\S\s]+?)'s\s([\S\s]+))");
+					// NPC - Owner
+					static boost::regex npcOwnerPattern(R"(([\S\s]+?)\s-\s([\S\s]+))");
+
+					const bool ownerFirst = text.contains("'s ");
+					do_replacement(text, ownerFirst ? ownerNPCPattern : npcOwnerPattern, a_this, a_activator, a_dst, ownerFirst);
 				}
 
 				return result;
@@ -81,7 +83,7 @@ namespace Hooks
 
 		stl::write_vfunc<RE::TESObjectCONT, TESObjectCONT::GetActivateText>();
 		REX::INFO("Installed container name hook");
-		
+
 		if (Language::doNPCReplacement) {
 			stl::write_vfunc<RE::TESNPC, TESNPC::GetActivateText>();
 			REX::INFO("Installed NPC name hook");

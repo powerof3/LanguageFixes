@@ -5,9 +5,9 @@ namespace Language
 	class language
 	{
 	public:
-		language(RE::TESObjectREFR* a_owner, RE::TESBoundObject* a_object, const boost::smatch& a_match) :
-			owner(a_owner, a_match[1].str()),
-			object(a_object, a_match[2].str())
+		language(RE::TESObjectREFR* a_owner, RE::TESBoundObject* a_object, const boost::smatch& a_match, bool a_ownerFirst = true) :
+			owner(a_owner, a_ownerFirst ? a_match[1].str() : a_match[2].str()),
+			object(a_object, a_ownerFirst ? a_match[2].str() : a_match[1].str())
 		{}
 		virtual ~language(){};
 
@@ -213,11 +213,12 @@ namespace Language
 		}
 	};
 
-	inline REX::INI::Str languageOverride{ "Settings"sv "sLanguageOverride"sv, "" };
 	inline std::uint64_t gameLanguageHash;
-	inline REX::INI::Bool doNPCReplacement{ "Settings", "bNPCNameReplacement", true };
+	
+	inline REX::INI::Str languageOverride{ "Settings"sv, "sLanguageOverride"sv, "" };
+	inline REX::INI::Bool doNPCReplacement{ "Settings"sv, "bNPCNameReplacement"sv, true };
 
 	void        LoadSettings();
 	void        GetGameLanguageHash();
-	std::string GetOutput(RE::TESObjectREFR* a_owner, RE::TESBoundObject* a_object, const boost::smatch& a_match);
+	std::string GetOutput(RE::TESObjectREFR* a_owner, RE::TESBoundObject* a_object, const boost::smatch& a_match, bool a_ownerFirst);
 }
