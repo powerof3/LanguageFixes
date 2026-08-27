@@ -5,7 +5,7 @@ namespace Language
 	class language
 	{
 	public:
-		language(RE::TESObjectREFR* a_owner, RE::TESBoundObject* a_object, const srell::smatch& a_match) :
+		language(RE::TESObjectREFR* a_owner, RE::TESBoundObject* a_object, const boost::smatch& a_match) :
 			owner(a_owner, a_match[1].str()),
 			object(a_object, a_match[2].str())
 		{}
@@ -73,7 +73,7 @@ namespace Language
 			if (a_str.empty()) {
 				return false;
 			}
-			auto str = string::tolower(a_str);
+			auto str = REX::STR::TO_LOWER(a_str);
 			if (str.front() == 'h' && str.size() > 1) {
 				return is_vowel(str[1]);
 			} else {
@@ -100,7 +100,7 @@ namespace Language
 			if (a_str.empty()) {
 				return false;
 			}
-			auto str = string::tolower(a_str);
+			auto str = REX::STR::TO_LOWER(a_str);
 			return str.back() == 's';
 		}
 	};
@@ -154,7 +154,7 @@ namespace Language
 		const std::string& get_suffixed_name()
 		{
 			auto sex = get_sex();
-			auto str = string::tolower(owner.text);
+			auto str = REX::STR::TO_LOWER(owner.text);
 
 			switch (str.back()) {
 			case 'a':
@@ -213,11 +213,11 @@ namespace Language
 		}
 	};
 
-	inline std::string   languageOverride{};
+	inline REX::INI::Str languageOverride{ "Settings"sv "sLanguageOverride"sv, "" };
 	inline std::uint64_t gameLanguageHash;
-	inline bool          doNPCReplacement{ true };
+	inline REX::INI::Bool doNPCReplacement{ "Settings", "bNPCNameReplacement", true };
 
 	void        LoadSettings();
 	void        GetGameLanguageHash();
-	std::string GetOutput(RE::TESObjectREFR* a_owner, RE::TESBoundObject* a_object, const srell::smatch& a_match);
+	std::string GetOutput(RE::TESObjectREFR* a_owner, RE::TESBoundObject* a_object, const boost::smatch& a_match);
 }

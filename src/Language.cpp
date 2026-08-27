@@ -2,7 +2,7 @@
 
 namespace Language
 {
-	std::string GetOutput(RE::TESObjectREFR* a_owner, RE::TESBoundObject* a_object, const srell::smatch& a_match)
+	std::string GetOutput(RE::TESObjectREFR* a_owner, RE::TESBoundObject* a_object, const boost::smatch& a_match)
 	{
 		switch (gameLanguageHash) {
 		case "CHINESE"_h:
@@ -28,32 +28,28 @@ namespace Language
 
 	void LoadSettings()
 	{
-		constexpr auto path = L"Data/SKSE/Plugins/po3_LanguageFixes.ini";
+		const auto store = REX::FIniSettingStore::GetSingleton();
+		store->Init("Data/SKSE/Plugins/po3_LanguageFixes.ini", "");
 
-		CSimpleIniA ini;
-		ini.SetUnicode();
-
-		ini.LoadFile(path);
-
-		ini::get_value(ini, languageOverride, "Settings", "sLanguageOverride", nullptr);
-		ini::get_value(ini, doNPCReplacement, "Settings", "bNPCNameReplacement", nullptr);
-
-		(void)ini.SaveFile(path);
+		store->Load();
+		store->Save();
 	}
 
 	void GetGameLanguageHash()
 	{
-		std::string gameLanguage = string::toupper(RE::GetINISetting("sLanguage:General")->GetString());
+		std::string gameLanguage = REX::STR::TO_UPPER(*"sLanguage:General"_ini);
 
-		if (languageOverride.empty()) {
-			logger::info("Language override set to AUTODETECT ({})", gameLanguage);
-			gameLanguageHash = string::const_hash(gameLanguage);
+		auto& languageOverrideStr = stl::get_setting_ref(languageOverride);
+		
+		if (languageOverrideStr.empty()) {
+			REX::INFO("Language override set to AUTODETECT ({})", gameLanguage);
+			gameLanguageHash = REX::STR::CONST_HASH(gameLanguage);
 		} else {
-			string::trim(languageOverride);
-			languageOverride = string::toupper(languageOverride);
+			REX::STR::TRIM(languageOverrideStr);
+			languageOverrideStr = REX::STR::TO_UPPER(languageOverrideStr);
 
-			logger::info("Language override set to {}", languageOverride);
-			gameLanguageHash = string::const_hash(languageOverride);
+			REX::INFO("Language override set to {}", languageOverrideStr);
+			gameLanguageHash = REX::STR::CONST_HASH(languageOverrideStr);
 		}
 	}
 }

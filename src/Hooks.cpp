@@ -3,15 +3,15 @@
 
 namespace Hooks
 {
-	static void do_replacement(std::string& text, const srell::regex& pattern, RE::TESBoundObject* a_this, RE::TESObjectREFR* a_activator, RE::BSString& a_dst)
+	static void do_replacement(std::string& text, const boost::regex& pattern, RE::TESBoundObject* a_this, RE::TESObjectREFR* a_activator, RE::BSString& a_dst)
 	{
-		srell::smatch match;
+		boost::smatch match;
 
 		std::istringstream iss(text);
 		std::ostringstream oss;
 		std::string        line;
 		while (std::getline(iss, line)) {
-			if (srell::regex_search(line, match, pattern)) {
+			if (boost::regex_search(line, match, pattern)) {
 				oss << Language::GetOutput(a_activator, a_this, match);
 			} else {
 				oss << line;
@@ -19,7 +19,7 @@ namespace Hooks
 			oss << '\n';
 		}
 
-		a_dst = string::trim_copy(oss.str());
+		a_dst = REX::STR::TRIM_COPY(oss.str());
 	}
 
 	namespace TESObjectCONT
@@ -35,7 +35,7 @@ namespace Hooks
 				}
 
 				if (std::string text = a_dst.c_str(); text.contains("'s ")) {				
-					static srell::regex pattern(R"(([\S\s]+?)'s\s([\S\s]+))");
+					static boost::regex pattern(R"(([\S\s]+?)'s\s([\S\s]+))");
 					do_replacement(text, pattern, a_this, a_activator, a_dst);
 				}
 
@@ -60,7 +60,7 @@ namespace Hooks
 				}
 
 				if (std::string text = a_dst.c_str(); text.contains("'s ") || text.contains(" - ")) {				
-					srell::regex pattern(
+					boost::regex pattern(
 						text.contains("'s ") ?
 							R"(([\S\s]+?)'s\s([\S\s]+))" :
 							R"(([\S\s]+?)\s-\s([\S\s]+))");
@@ -77,14 +77,14 @@ namespace Hooks
 
 	void Install()
 	{
-		logger::info("{:*^30}", "HOOKS");
+		REX::INFO("{:*^30}", "HOOKS");
 
 		stl::write_vfunc<RE::TESObjectCONT, TESObjectCONT::GetActivateText>();
-		logger::info("Installed container name hook");
+		REX::INFO("Installed container name hook");
 		
 		if (Language::doNPCReplacement) {
 			stl::write_vfunc<RE::TESNPC, TESNPC::GetActivateText>();
-			logger::info("Installed NPC name hook");
+			REX::INFO("Installed NPC name hook");
 		}
 	}
 }
